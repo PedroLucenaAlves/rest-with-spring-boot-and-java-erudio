@@ -20,6 +20,10 @@ public class Person implements Serializable {
 		this.id = id;
 
 	}
+	
+	public Long getId() {
+		return id;
+	}
 
 	public String getFirstName() {
 		return firstName;
