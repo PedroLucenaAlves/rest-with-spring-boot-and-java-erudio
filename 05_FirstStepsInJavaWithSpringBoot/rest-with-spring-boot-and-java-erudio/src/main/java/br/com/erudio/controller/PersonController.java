@@ -34,7 +34,7 @@ public class PersonController {
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person findById(@PathVariable(value = "id") String id) throws Exception { // PathVariable = avisando que o id da url e o mesmo do parametro
+	public Person findById(@PathVariable(value = "id") Long id) throws Exception { // PathVariable = avisando que o id da url e o mesmo do parametro
 		return personService.findById(id);
 	}
 						//consome e produz json
@@ -49,7 +49,7 @@ public class PersonController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity delete(@PathVariable String id) {
+	public ResponseEntity delete(@PathVariable Long id) {
 		personService.delete(id);
 		
 		return ResponseEntity.noContent().build(); //chama o objeto "noContent", depois constroi o objeto "build" (retorna codigo 204)

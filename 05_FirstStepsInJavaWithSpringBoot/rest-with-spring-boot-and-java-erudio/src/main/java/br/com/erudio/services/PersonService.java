@@ -1,21 +1,32 @@
 package br.com.erudio.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.erudio.entitie.Person;
+import br.com.erudio.exceptions.ResourceNotFoundException;
+import br.com.erudio.repositories.PersonRepository;
 
 @Service // classe sera injetada em run time em outras classes (injecao de dependencias evitando usar o new)
 public class PersonService {
 
-	public final AtomicLong counter = new AtomicLong();
 	private Logger logger = Logger.getLogger(PersonService.class.getName());
 
-	public Person findById(String id) {
+	@Autowired
+	PersonRepository personRepository;
+
+	// retornando uma lista de objetos
+	public List<Person> findAll() {
+
+		logger.info("Finding all people!");
+
+		return personRepository.findAll();
+	}
+
+	public Person findById(Long id) {
 
 		// retornando um mock (mock e uma estrutura temporaria , semelhante a estrutura
 		// que colocamos na obra ate o cimento secar), que serve como teste
@@ -24,68 +35,47 @@ public class PersonService {
 
 		logger.info("Finding one person!");
 
-		Person person = new Person();
-
-		// simulando info das pessoas (mock simula qualquer id passado na url)
-		person.setId(counter.incrementAndGet());
-		person.setFirstName("Pedro");
-		person.setLastName("Silva");
-		person.setGender("Man");
-		person.setAddress("Teresopolis");
-		
-		return person;
+		return personRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID !"));
 
 	}
-	
+
 	public Person create(Person person) {
-		
+
 		logger.info("Creating one person!");
-		
-		return person;
+
+		return personRepository.save(person);
 	}
-	
+
 	public Person update(Person person) {
-		
+
+		// na logica , recebemos uma person nova alterando um valor (exp: sobre nome),
+		// nao podemos apenas salvar no banco se nao estariamos gravando novamente essa pessoa no banco
+
 		logger.info("Updating one person!");
-		
-		return person;
+
+		// Aqui recuperamos essa person por id e jogamos na var entity
+		var entity = personRepository.findById(person.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID !")); //usamos lambda chamando nossa exception
+
+		// setando os valores em entity que vieram nos dados passados para person na requisicao
+		entity.setFirstName(person.getFirstName());
+		entity.setLastName(person.getLastName());
+		entity.setAddress(person.getAddress());
+		entity.setGender(person.getGender());
+
+		return personRepository.save(entity);
 	}
-	
-	//retornando uma lista de objetos
-	public List<Person> findAll(){
-		
-		logger.info("Finding all people!");
-		
-		List<Person> persons = new ArrayList<>();
-		for(int i = 0; i < 8; i ++) {
-			Person person = mockPerson(i);
-			persons.add(person);
-		}
-		return persons;
-	}
-	
-	public void delete(String id) {
-		
+
+	public void delete(Long id) {
+
 		logger.info("Deleting one person with success!");
-		
-	}
-	
-	private Person mockPerson(int i) {
-		Person person = new Person();
 
-		// simulando info das pessoas (mock simula qualquer id passado na url)
-		person.setId(counter.incrementAndGet());
-		person.setFirstName("Person name = " + i);
-		person.setLastName("Last name" + i);
-		person.setGender("Male");
-		person.setAddress("Some address in Brasil " + i);
-		
-		logger.info("Valor id: " + person.getId());
-		logger.info("Valores: " + person.getFirstName());
-		logger.info("Valores: " + person.getLastName());
-		return person;
-	}
+		var entity = personRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID !"));
 
-	
+		personRepository.delete(entity);
+
+	}
 
 }
