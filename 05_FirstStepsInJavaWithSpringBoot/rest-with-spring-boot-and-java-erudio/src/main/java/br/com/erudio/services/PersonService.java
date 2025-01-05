@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.erudio.data.vo.v1.PersonVO;
 import br.com.erudio.entitie.Person;
 import br.com.erudio.exceptions.ResourceNotFoundException;
 import br.com.erudio.repositories.PersonRepository;
@@ -23,7 +24,7 @@ public class PersonService {
 	PersonRepository personRepository;
 
 	// retornando uma lista de objetos
-	public List<Person> findAll() {
+	public List<PersonVO> findAll() {
 
 		logger.info("Finding all people!");
 
@@ -39,14 +40,14 @@ public class PersonService {
 
 	}
 
-	public Person create(Person person) {
+	public PersonVO create(PersonVO person) {
 
 		logger.info("Creating one person!");
 
 		return personRepository.save(person);
 	}
 
-	public Person update(Person person) {
+	public PersonVO update(PersonVO person) {
 
 		// na logica , recebemos uma person nova alterando um valor (exp: sobre nome),
 		// nao podemos apenas salvar no banco se nao estariamos gravando novamente essa pessoa no banco
