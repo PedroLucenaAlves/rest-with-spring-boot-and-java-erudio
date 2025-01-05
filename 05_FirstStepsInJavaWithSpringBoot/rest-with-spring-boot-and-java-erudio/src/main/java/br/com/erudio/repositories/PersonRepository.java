@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import br.com.erudio.entitie.Person;
 
-@Repository                       //extender de jparepository nos permite executar um crud
-public interface PersonRepository extends JpaRepository<Person, Long> {}
+@Repository
+public interface PersonRepository extends JpaRepository<Person, Long> {
+}

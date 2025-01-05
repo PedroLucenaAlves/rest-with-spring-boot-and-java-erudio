@@ -10,11 +10,7 @@ import br.com.erudio.entitie.Person;
 import br.com.erudio.exceptions.ResourceNotFoundException;
 import br.com.erudio.repositories.PersonRepository;
 
-/**
- * Servico encapsula a logica de negocios
- */
-
-@Service // classe sera injetada em run time em outras classes (injecao de dependencias evitando usar o new)
+@Service
 public class PersonService {
 
 	private Logger logger = Logger.getLogger(PersonService.class.getName());
@@ -22,7 +18,6 @@ public class PersonService {
 	@Autowired
 	PersonRepository personRepository;
 
-	// retornando uma lista de objetos
 	public List<Person> findAll() {
 
 		logger.info("Finding all people!");
@@ -48,16 +43,11 @@ public class PersonService {
 
 	public Person update(Person person) {
 
-		// na logica , recebemos uma person nova alterando um valor (exp: sobre nome),
-		// nao podemos apenas salvar no banco se nao estariamos gravando novamente essa pessoa no banco
-
 		logger.info("Updating one person!");
 
-		// Aqui recuperamos essa person por id e jogamos na var entity
 		var entity = personRepository.findById(person.getId())
-				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID !")); //usamos lambda chamando nossa exception
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID !"));
 
-		// setando os valores em entity que vieram nos dados passados para person na requisicao
 		entity.setFirstName(person.getFirstName());
 		entity.setLastName(person.getLastName());
 		entity.setAddress(person.getAddress());
