@@ -39,7 +39,7 @@ public class PersonController {
 	}
 						//consome e produz json
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person create(@RequestBody Person person) {
+	public Person create(@RequestBody Person person) { //recebe um person atraves do corpo da requisicao
 		return personService.create(person);
 	}
 	

@@ -10,6 +10,10 @@ import br.com.erudio.entitie.Person;
 import br.com.erudio.exceptions.ResourceNotFoundException;
 import br.com.erudio.repositories.PersonRepository;
 
+/**
+ * Servico encapsula a logica de negocios
+ */
+
 @Service // classe sera injetada em run time em outras classes (injecao de dependencias evitando usar o new)
 public class PersonService {
 
