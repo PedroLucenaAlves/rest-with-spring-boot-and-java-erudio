@@ -32,11 +32,6 @@ public class PersonService {
 
 	public Person findById(Long id) {
 
-		// retornando um mock (mock e uma estrutura temporaria , semelhante a estrutura
-		// que colocamos na obra ate o cimento secar), que serve como teste
-		// para nosso projeto enquanto o restante da estrutura segue em andamento -
-		// existe mocks permanetes nos testes unitarios
-
 		logger.info("Finding one person!");
 
 		return personRepository.findById(id)

@@ -5,9 +5,10 @@ spring:
     username: root
     password: admin
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+   #  properties:   (comentado por conta do warning: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect')
+    #   hibernate:
+     #     dialect: org.hibernate.dialect.MySQLDialect
     show-sql: false
